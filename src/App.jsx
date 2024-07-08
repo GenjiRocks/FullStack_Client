@@ -15,7 +15,8 @@ function App() {
       <Route path='/' element={<Home />} />
       <Route path='/project' element={<Project/>}/>
       <Route path='/dashboard' element={<Dashboard/>}/>
-      <Route path='/authenticate' element={<Authenticate/>}/>
+      <Route path='/login' element={<Authenticate/>}/>
+      <Route path='/register' element={<Authenticate/>}/>
       <Route path='*' element={<PageNotFound/>}/> {/* * indicates a page that is outside the routing */}
      </Routes>
      <Footer/>
