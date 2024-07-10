@@ -17,14 +17,14 @@ function AddProject() {
 
     <Modal show={show} onHide={handleClose} size='lg'>
         <Modal.Header closeButton>
-          <Modal.Title>Add Project Details</Modal.Title>
+          <Modal.Title className='text-warning'>Add Project Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             <Col sm={12} md={6}>
-            <label for="">
-              <input type="file" style={{display:'none'}} />
-              <img src="https://static.thenounproject.com/png/2534766-200.png" alt="" width={'100%'}/>
+            <label htmlFor="projImg">
+              <input id='projImg' type="file" style={{display:'none'}} />
+              <img  src="https://cdn-icons-png.freepik.com/512/338/338864.png" alt="" width={'100%'}/>
             </label>
             </Col>
 
@@ -34,15 +34,17 @@ function AddProject() {
                 <input type="text" placeholder='Title' className='form-control' />
               </div>
               <div className='mb-3'>
-              <input type="text" placeholder='Title' className='form-control' />
+              <input type="text" placeholder='Language' className='form-control' />
               </div>
               <div className='mb-3'>
-              <input type="text" placeholder='Title' className='form-control' />
+              <input type="text" placeholder='Github' className='form-control' />
               </div>
               <div className='mb-3'>
-              <input type="text" placeholder='Title' className='form-control' />
+              <input type="text" placeholder='Website' className='form-control' />
               </div>
-              <div className='mb-3'></div>
+              <div className='mb-3'>
+                <textarea name="" id="" placeholder='Overview' className='form-control' rows={'4'}></textarea>
+              </div>
 
             </form>
             </Col>
