@@ -15,10 +15,10 @@ function Dashboard() {
       <MyProject/>
     </Col>
 
-    <Col sm={12} md={4}>
-    
+    <Col sm={12} md={4} className='px-5 mb-5'>
+    <Profile/>
     </Col>
-      <Profile/>
+      
     </Row>
 
     
