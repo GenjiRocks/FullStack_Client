@@ -8,12 +8,12 @@ import Card from 'react-bootstrap/Card';
 import userpic from '../assets/key.png'
 import { faStackOverflow } from '@fortawesome/free-brands-svg-icons'
 
-function Authenticate(register) {
+function Authenticate({register}) {
   return (
     <>
     <Container fluid className='d-flex flex-column align-items-center justify-content-center' style={{height:'100vh'}}>
-    <Link to="" style={{textDecoration:'none'}}>
-    <p><FontAwesomeIcon icon={faArrowLeft} /> Back to Home</p>
+    <Link to="/" style={{textDecoration:'none'}}>
+    <p className='fs-3'><FontAwesomeIcon icon={faArrowLeft} /> Back to Home</p>
     </Link>
    
       
