@@ -1,14 +1,37 @@
 import { faArrowLeft, faFontAwesome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import userpic from '../assets/key.png'
 import { faStackOverflow } from '@fortawesome/free-brands-svg-icons'
+import { registerApi } from '../services/allApi'
 
 function Authenticate({register}) {
+
+  // usestate for getting the input content
+  const [userDetails, setUserDetails] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  console.log(userDetails);
+
+  // Register button api call
+  const handleRegister= async()=>{
+    const {username,email,password} = userDetails
+    // Check if input boxes are filled
+    if(!username || !email ||!password){
+      alert('Please fill all the fields')
+    }else{
+      // Call the register api
+      const response = await registerApi(userDetails)
+    }
+  }
+
   return (
     <>
     <Container fluid className='d-flex flex-column align-items-center justify-content-center' style={{height:'100vh'}}>
@@ -28,18 +51,18 @@ function Authenticate({register}) {
           <h5>Sign In to Your Account</h5>}
           <form action="" className='mt-4 w-75'>
             {register && <div className='mb-3'>
-            <input type="text" placeholder='Username' className='form-control rounded-4' />
+            <input type="text" placeholder='Username' className='form-control rounded-4' onChange={(e)=>setUserDetails({...userDetails,username:e.target.value})} />
             </div>}
             <div className='mb-3'>
-            <input type="email" placeholder='Email' className='form-control rounded-4' />
+            <input type="email" placeholder='Email' className='form-control rounded-4' onChange={(e)=>setUserDetails({...userDetails,email:e.target.value})} />
             </div >
             <div >
-            <input type="password" placeholder='Password' className='form-control rounded-4' />
+            <input type="password" placeholder='Password' className='form-control rounded-4' onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})} />
             </div>
             <div className='mb-3'>
 
           {register? <div>
-              <Button variant="warning" type="submit" className='w-75 my-2 rounded-5 mt-3'>Register</Button>
+              <Button variant="warning" type="submit" className='w-75 my-2 rounded-5 mt-3' onClick={handleRegister}>Register</Button>
               <p>Already a User? Click here to  <Link to='/login' className='text-danger fs-4' style={{textDecoration:'none'}}>Login</Link></p>
            </div>
            :
