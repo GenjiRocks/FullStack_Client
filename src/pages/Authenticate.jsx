@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import userpic from '../assets/key.png'
 import { faStackOverflow } from '@fortawesome/free-brands-svg-icons'
-import { registerApi } from '../services/allApi'
+import { loginApi, registerApi } from '../services/allApi'
 
 function Authenticate({register}) {
 
@@ -30,6 +30,18 @@ function Authenticate({register}) {
       // Call the register api
       const response = await registerApi(userDetails)
     }
+  }
+
+  // Login button api call
+  const handleLogin= async()=>{
+    const {email,password} = userDetails
+    // Check if input boxes are filled
+    if(!email || !password){
+      alert('Please fill all the fields')
+      }else{
+        // Call the login api
+        const response = await loginApi(userDetails)
+      }
   }
 
   return (
@@ -67,7 +79,7 @@ function Authenticate({register}) {
            </div>
            :
             <div>
-              <Button variant="warning" type="submit" className='w-75 my-2 rounded-5'>Login</Button>
+              <Button variant="warning" type="submit" className='w-75 my-2 rounded-5' onClick={handleLogin}>Login</Button>
               <p>New User? Click here to <Link to='/register' className='text-danger fs-4' style={{textDecoration:'none'}}>Register</Link> </p>
             </div>}
 
