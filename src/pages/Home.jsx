@@ -1,12 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import titleimage from '../assets/idea.png'
 import ProjectCard from '../components/ProjectCard'
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 function Home() {
+  const [isLogin, setisLogin] = useState();
+  useEffect(() => {
+    if (sessionStorage.getItem('token')) {
+      setisLogin(true)
+      } else {
+        setisLogin(false)
+        }
+  }, []);
+  
   return (
     <>
     <Container fluid className='bg-primary' style={{height:'100vh'}}>
@@ -14,8 +24,10 @@ function Home() {
         <Col xs={12} md={6} className='ps-5'>
         <p style={{fontSize:'70px',color:'white'}}>Project Fair</p>
         <p className='text-white mb-2' style={{fontSize:'30px'}}>One stop destination for all the software development Projects</p>
-        <Link to="/login"><Button variant='info rounded-5 mt-3' className='me-4'>Get Started <FontAwesomeIcon icon={faArrowRight} /></Button></Link>
+        {!isLogin? <Link to="/login"><Button variant='info rounded-5 mt-3' className='me-4'>Get Started <FontAwesomeIcon icon={faArrowRight} /></Button></Link>
+        :
         <Link to="/dashboard"><Button variant='warning rounded-5 mt-3'>Manage Project <FontAwesomeIcon icon={faArrowRight} /></Button></Link>
+        }
         </Col>
         <Col xs={12} md={6}>
             <img style={{color:'white',marginTop:'100px'}} src={titleimage} alt="" className='w-75' />

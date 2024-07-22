@@ -11,6 +11,15 @@ function AddProject() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [projectDetails, setprojectDetails] = useState({
+    title:'',
+    language:'',
+    github:'',
+    website:'',
+    overview:''
+  });
+  console.log(projectDetails);
   return (
     <>
     <Button variant="success" onClick={handleShow}>Add Project</Button>
@@ -31,19 +40,19 @@ function AddProject() {
             <Col sm={12} md={6}>
             <form className='p-3' action="">
               <div className='mb-3'>
-                <input type="text" placeholder='Title' className='form-control' />
+                <input type="text" placeholder='Title' className='form-control' onChange={(e)=>setprojectDetails({...projectDetails,title:e.target.value})} />
               </div>
               <div className='mb-3'>
-              <input type="text" placeholder='Language' className='form-control' />
+              <input type="text" placeholder='Language' className='form-control' onChange={(e)=>setprojectDetails({...projectDetails,language:e.target.value})} />
               </div>
               <div className='mb-3'>
-              <input type="text" placeholder='Github' className='form-control' />
+              <input type="text" placeholder='Github' className='form-control' onChange={(e)=>setprojectDetails({...projectDetails,github:e.target.value})} />
               </div>
               <div className='mb-3'>
-              <input type="text" placeholder='Website' className='form-control' />
+              <input type="text" placeholder='Website' className='form-control' onChange={(e)=>setprojectDetails({...projectDetails,website:e.target.value})} />
               </div>
               <div className='mb-3'>
-                <textarea name="" id="" placeholder='Overview' className='form-control' rows={'4'}></textarea>
+                <textarea name="" id="" placeholder='Overview' className='form-control' rows={'4'} onChange={(e)=>setprojectDetails({...projectDetails,overview:e.target.value})}></textarea> 
               </div>
 
             </form>

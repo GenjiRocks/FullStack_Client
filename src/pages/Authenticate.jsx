@@ -2,14 +2,18 @@ import { faArrowLeft, faFontAwesome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import userpic from '../assets/key.png'
 import { faStackOverflow } from '@fortawesome/free-brands-svg-icons'
 import { loginApi, registerApi } from '../services/allApi'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Authenticate({register}) {
+  // giving path after signing up
+  const navigate = useNavigate()
 
   // usestate for getting the input content
   const [userDetails, setUserDetails] = useState({
@@ -25,10 +29,14 @@ function Authenticate({register}) {
     const {username,email,password} = userDetails
     // Check if input boxes are filled
     if(!username || !email ||!password){
-      alert('Please fill all the fields')
+      toast.info('Please fill all the fields')
     }else{
       // Call the register api
       const response = await registerApi(userDetails)
+      if(response.stats==200){
+        toast.success('User registered successfully')
+        navigate('/login')
+      }
     }
   }
 
@@ -37,10 +45,23 @@ function Authenticate({register}) {
     const {email,password} = userDetails
     // Check if input boxes are filled
     if(!email || !password){
-      alert('Please fill all the fields')
+      toast.info('Please fill all the fields')
       }else{
         // Call the login api
-        const response = await loginApi(userDetails)
+        const response = await loginApi({email,password}) /* {email,passwor} */
+        if(response.status == 200){
+          toast.success('Login Successful')
+          sessionStorage.setItem("existingUser",JSON.stringify(response.data.exsistingUser))
+          sessionStorage.setItem("token",response.data.token)
+          setTimeout(() => {
+            navigate('/')
+          }, 2000);
+         
+        }
+        else{
+          toast.error(response.response.data)
+        }
+        console.log(response);
       }
   }
 
@@ -74,12 +95,12 @@ function Authenticate({register}) {
             <div className='mb-3'>
 
           {register? <div>
-              <Button variant="warning" type="submit" className='w-75 my-2 rounded-5 mt-3' onClick={handleRegister}>Register</Button>
+              <Button variant="warning" type="button" className='w-75 my-2 rounded-5 mt-3' onClick={handleRegister}>Register</Button>
               <p>Already a User? Click here to  <Link to='/login' className='text-danger fs-4' style={{textDecoration:'none'}}>Login</Link></p>
            </div>
            :
             <div>
-              <Button variant="warning" type="submit" className='w-75 my-2 rounded-5' onClick={handleLogin}>Login</Button>
+              <Button variant="warning" type="button" className='w-75 my-2 rounded-5' onClick={handleLogin}>Login</Button>
               <p>New User? Click here to <Link to='/register' className='text-danger fs-4' style={{textDecoration:'none'}}>Register</Link> </p>
             </div>}
 
@@ -96,7 +117,7 @@ function Authenticate({register}) {
     
 
     </Container>
-    
+    <ToastContainer theme='colored' position='top-center' autoClose = '2000' />
     
     </>
   )
