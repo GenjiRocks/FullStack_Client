@@ -11,3 +11,8 @@ export const registerApi = async (reqBody)=>{
 export const loginApi = async (reqBody)=>{
     return await commonApi('POST',`${serverUrl}/login`,reqBody,"")
 }
+
+// Api to add details with reqbody and reqheader as multiport
+export const addProjectApi = async (reqBody,reqHeader)=>{
+    return await commonApi('POST',`${serverUrl}/addproject`,reqBody,reqHeader)
+    }
