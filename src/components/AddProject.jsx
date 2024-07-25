@@ -33,9 +33,10 @@ function AddProject() {
   });
   console.log(projectDetails);
 
-  // Function to add details
+  // Function to add image
   const handleFile = (e)=>{
-    console.log(e.target.files[0]);
+    // console.log(e);
+    // console.log(e.target.files[0]);
     setprojectDetails({...projectDetails,projectImage:e.target.files[0]})
   }
 
@@ -68,7 +69,8 @@ useEffect(() => {
     settoken(sessionStorage.getItem('token'))
   }
 }, []);
-console.log(token);
+// console.log(token);
+
 
   // Add funtion and also alert if inputs fields are empty
   const handleAdd = async (e)=> {
@@ -154,8 +156,9 @@ console.log(token);
             Add
           </Button>
         </Modal.Footer>
+         <ToastContainer theme='colored' position='top-center' autoClose = '2000' />
       </Modal>
-      <ToastContainer theme='colored' position='top-center' autoClose = '2000' />
+     
     </>
   )
 }
