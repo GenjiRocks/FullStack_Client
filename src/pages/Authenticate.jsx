@@ -33,10 +33,13 @@ function Authenticate({register}) {
     }else{
       // Call the register api
       const response = await registerApi(userDetails)
-      if(response.stats==200){
+      if(response.status==200){
         toast.success('User registered successfully')
         navigate('/login')
       }
+      else{
+        toast.error('Registration failed')
+        }
     }
   }
 
@@ -53,6 +56,11 @@ function Authenticate({register}) {
           toast.success('Login Successful')
           sessionStorage.setItem("existingUser",JSON.stringify(response.data.exsistingUser))
           sessionStorage.setItem("token",response.data.token)
+          setUserDetails({
+            username: '',
+            email: '',
+            password: '',
+          })
           setTimeout(() => {
             navigate('/')
           }, 2000);

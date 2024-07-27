@@ -6,16 +6,32 @@ import titleimage from '../assets/idea.png'
 import ProjectCard from '../components/ProjectCard'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { homeProjectApi } from '../services/allApi';
 
 function Home() {
   const [isLogin, setisLogin] = useState();
+
+   // Get api for home project (3 projects on screen) and its usestate
+   const [homeProject, setHomeProject] = useState([]);
+   const getHomeProject = async()=>{
+    const result = await homeProjectApi()
+    setHomeProject(result.data)
+   }
+
+
   useEffect(() => {
     if (sessionStorage.getItem('token')) {
       setisLogin(true)
       } else {
         setisLogin(false)
         }
+
+        getHomeProject()
   }, []);
+  
+ 
+
+  
   
   return (
     <>
@@ -38,15 +54,21 @@ function Home() {
     <Container fluid>
       <h1 className='mt-4 text-center'>Explore our Projects</h1>
       <Row>
+        {homeProject?.length>0?
+        homeProject?.map((item)=>(<Col md={4} className='p-4'  >
+          <ProjectCard projects={item}/>
+        </Col>))
+        :null
+        }
+        {/* <Col md={4} className='p-4'>
+          <ProjectCard/>
+        </Col> */}
+        {/* <Col md={4} className='p-4'  >
+          <ProjectCard/>
+        </Col>
         <Col md={4} className='p-4'>
           <ProjectCard/>
-        </Col>
-        <Col md={4} className='p-4'  >
-          <ProjectCard/>
-        </Col>
-        <Col md={4} className='p-4'>
-          <ProjectCard/>
-        </Col>
+        </Col> */}
       </Row>
       <Link to="/project" className='text-center' ><h5 className='text-danger fs-2'>See More Projects</h5></Link>
       

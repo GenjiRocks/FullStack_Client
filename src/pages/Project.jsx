@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import { Col, Container, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
@@ -7,49 +7,94 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import ProjectCard from '../components/ProjectCard';
+import { getAllProjectApi } from '../services/allApi';
+import { Link } from 'react-router-dom';
 
 function Project() {
+  // usestate for getting token from session storage
+  const [istoken, setIsToken] = useState('')
+  const [allProject, setAllProject] = useState([])
+  const [searchKey, setSearchKey] = useState('')
+
+  // calling api to get all projects
+  const getallProject = async ()=>{
+    if(sessionStorage.getItem("token")){
+      const token =sessionStorage.getItem("token")
+
+      const reqHeader = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      }
+      const result = await getAllProjectApi(searchKey,reqHeader)
+      if(result.status === 200){
+        setAllProject(result.data)
+        // console.log(result)
+        }
+      
+    }
+   
+  }
+
+  console.log(allProject);
+  
+
+  // useeffect for getting the sessionstorage token
+  useEffect(() => {
+    const storedToken = sessionStorage.getItem('token')
+    if (storedToken) {
+      setIsToken(storedToken)
+    }
+   
+    }, [])
+
+  useEffect(()=>{
+    getallProject()
+  },[searchKey])
+
   return (
     <>
     <Header/>
-    <h1 className='text-center mt-5'>All Projects</h1>
-    <Row>
-      <Col md={4}></Col>
-      <Col md={4}>
-      <InputGroup className="mb-3 mt-3" >
-        {/* <Button variant="outline-primary" id="button-addon1" className='rounded-5'>
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </Button> */}
-        <InputGroup.Text style={{color:'white',backgroundColor:'black'}} className='rounded-start-5' id="basic-addon1"><FontAwesomeIcon icon={faMagnifyingGlass} /></InputGroup.Text>
-        <Form.Control
-          aria-label="Example text with button addon"
-          aria-describedby="basic-addon1"
-          placeholder="Technologies"
-          className='rounded-end-5 ms-2'
-          style={{fontSize:'20px',border:'solid black'}}
-        />
-      </InputGroup>
-      </Col>
-      <Col md={4}></Col>
-    </Row>
+    <h1 className='text-center mt-5 mb-5'>Projects</h1>
 
-    <Container fluid className='mt-4'>
-      <Row>
-        <Col md={4}>
-          <ProjectCard/>
-        </Col>
-        <Col md={4}>
-          
-        </Col>
-        <Col md={4}>
-         
-        </Col>
-      </Row>
-    
-    </Container>
-    
+  {istoken? <div>
+   <div className="row">
+      <div className="col-md-4"></div>
+      <div className="col-md-4 d-flex">
+        <input type="text" placeholder='technologies' onChange={(e)=>{setSearchKey(e.target.value)}} className='form-control' style={{marginTop:'-15px',marginRight:'-30px'}} />
+        <FontAwesomeIcon icon={faMagnifyingGlass} flip='horizontal' className='text-secondary'/>
+        
+        
+      </div>
+      <div className="col-md-4"></div>
+    </div>
 
-    <p className='text-center text-danger mt-5 fs-1' style={{fontWeight:'550'}}>No Project to Display</p>
+    {allProject?.length>0?<div className='container-fluid mt-5'>
+      <div className="row">
+        {allProject?.map((item)=>(<div className="col-md-4">
+           <ProjectCard  projects={item}/> 
+        </div>))}
+        <div className="col-md-4"></div>
+        <div className="col-md-4"></div>
+      </div>
+    </div>
+:   
+    <p className='text-center text-danger mt-5 fs-4'>No Project to display</p>}
+
+   </div>
+    
+    :
+     <div className="row w-100 d-flex justify-content-center align-items-center ">
+      <div className="col-md-2">
+        <div className="col-md-8 d-flex justify-content-center align-items-center flex-column">
+          <img src="" alt="no image" width={'100%'} height={'400px'} />
+          <h4>Login to explore more Projects</h4>
+        </div>
+      <div className="col-md-2"></div>
+      </div>
+
+     </div>
+    }
+
     </>
   )
 }
