@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AddProject from '../components/AddProject'
 import EditProject from '../components/EditProject'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobe, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { userProjectApi } from '../services/allApi'
+import { deleteProjectApi, userProjectApi } from '../services/allApi'
+import { addResponseContext } from '../context/DataShare'
+import { Link } from 'react-router-dom'
 
 function MyProject() {
+
+  // call the variable addResponse here
+  const {addResponse} = useContext(addResponseContext)
+  // usestate for delete screen refresh
+  const [deleteStatus, setDeleteStatus] = useState(false)
+
   const [userProjects, setuserProjects] = useState([])
   // get api call
   const getUserProject = async ()=>{
@@ -23,9 +31,22 @@ function MyProject() {
     
   }
   console.log(userProjects);
+
+  // Deleting project
+  const handleDelete = async(id)=>{
+    const result = await deleteProjectApi(id)
+    console.log(result);
+    if(result.status === 200){
+      setDeleteStatus(true)
+    }
+    
+  }
+
+
   useEffect(() => {
     getUserProject()
-  }, []);
+    setDeleteStatus(false)
+  }, [addResponse,deleteStatus]);
 
   
   return (
@@ -41,9 +62,14 @@ function MyProject() {
 
       <div className='d-flex align-items-center'>
         <EditProject/>
-        <a href=''><FontAwesomeIcon icon={faGlobe} className='text-warning ms-3' /></a>
+        <Link to={item.website} target='_blank'>
+        <FontAwesomeIcon icon={faGlobe} className='text-warning ms-3'/>
+        </Link>
+        <Link to={item.github} target='_blank'>
         <FontAwesomeIcon icon={faGithub} className='text-primary ms-3'  />
-        <FontAwesomeIcon icon={faTrash}  className='text-danger ms-3 me-5' />
+        </Link>
+        
+        <FontAwesomeIcon icon={faTrash} onClick={()=>handleDelete(item?._id)}  className='text-danger ms-3 me-5' />
       </div>
     </div>
    )):

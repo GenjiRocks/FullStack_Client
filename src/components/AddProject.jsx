@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState,useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { addProjectApi } from '../services/allApi';
+import { addResponseContext } from '../context/DataShare';
 
 
 function AddProject() {
@@ -22,6 +23,9 @@ function AddProject() {
 
   // usestate for storing token
   const [token, settoken] = useState('');
+
+  // for accessing context api 29/07 || where data is updated call the function setAddResponse || Assign the result into setAddResponse
+  const {setAddResponse} = useContext (addResponseContext)
  
   const [projectDetails, setprojectDetails] = useState({
     title:'',
@@ -101,6 +105,8 @@ useEffect(() => {
         if(result.status == 200){
           toast.success('Project Added Successfully')
           handleClose()
+          // here is where data is being changed so call context here
+          setAddResponse(result.data)
         }
       }
       else{
