@@ -24,6 +24,9 @@ function AddProject() {
   // usestate for storing token
   const [token, settoken] = useState('');
 
+  // usestate for the key component in input
+  const [key, setkey] = useState(0);
+
   // for accessing context api 29/07 || where data is updated call the function setAddResponse || Assign the result into setAddResponse
   const {setAddResponse} = useContext (addResponseContext)
  
@@ -55,6 +58,11 @@ function AddProject() {
       projectImage:''
       });
       setpreview('')
+      if(key==0){
+        setkey(1)
+      }else{
+        setkey(0)
+      }
   }
 
    // Useeffect to convert image into URL
@@ -131,7 +139,7 @@ useEffect(() => {
       <Row>
         <Col sm={12} md={6}>
         <label htmlFor="projImg" >
-          <input id='projImg' type="file" style={{display:'none'}}  onChange={(e)=>handleFile(e)} />
+          <input id='projImg' type="file" style={{display:'none'}} key={key}  onChange={(e)=>handleFile(e)} /> {/* key as the potential to call onchange event */}
           <img  src={preview?preview : "https://cdn-icons-png.freepik.com/512/338/338864.png"} alt="" width={'100%'}/>
         </label>
         </Col>

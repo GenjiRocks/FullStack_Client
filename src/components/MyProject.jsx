@@ -61,7 +61,7 @@ function MyProject() {
       <h5>{item.title}</h5>
 
       <div className='d-flex align-items-center'>
-        <EditProject/>
+        <EditProject project={item}/>
         <Link to={item.website} target='_blank'>
         <FontAwesomeIcon icon={faGlobe} className='text-warning ms-3'/>
         </Link>
